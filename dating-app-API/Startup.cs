@@ -29,6 +29,8 @@ namespace DatingApp.API
             // Use the ConnexionString setup in appsettings.json accessible from Configuration property
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnexion")));
             services.AddMvc();
+            // allow to manage cors for cross domains calls
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +42,10 @@ namespace DatingApp.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            // Configure cors to allow all
+            // Need to be set BEFORE UseMvc to set headers Before the request is handled by controllers
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseMvc();   // handle the requests by controllers
         }
     }
 }
