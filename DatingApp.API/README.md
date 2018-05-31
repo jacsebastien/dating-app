@@ -20,7 +20,7 @@ Launch API:
 Entityframework commands:
     dotnet ef
 
-Create migrations:
+Create migrations based on Models creation and DataContext:
     dotnet ef migrations add InitialCreate
 
 Update database from migration files
