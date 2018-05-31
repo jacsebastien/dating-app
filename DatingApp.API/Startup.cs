@@ -31,6 +31,10 @@ namespace DatingApp.API
             services.AddMvc();
             // allow to manage cors for cross domains calls
             services.AddCors();
+            // Implements repositories to access it's methods
+            // AddScoped to call it each time an http request is done
+            // Good place to test env and use one repository or another in function of Prod/Dev
+            services.AddScoped<IAuthRepository, AuthRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
