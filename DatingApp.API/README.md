@@ -1,3 +1,5 @@
+Notes with commands or process to remember
+
 Create new dotnet webapi project:
     dotnet new webapi -o DatingApp.API -n DatingApp.API
 
