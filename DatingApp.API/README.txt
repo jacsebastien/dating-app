@@ -15,5 +15,11 @@ Launch API:
     OR
     dotnet watch run    # if Microsoft.DotNet.Watcher.Tools is setup in .csproj file
 
+Entityframework commands:
+    dotnet ef
 
+Create migrations:
+    dotnet ef migrations add InitialCreate
 
+Update database from migration files
+    dotnet ef database update
