@@ -1,0 +1,11 @@
+/Users/sebastien/www/DatingApp/DatingApp.API/bin/Debug/netcoreapp2.0/DatingApp.API.deps.json
+/Users/sebastien/www/DatingApp/DatingApp.API/bin/Debug/netcoreapp2.0/DatingApp.API.runtimeconfig.json
+/Users/sebastien/www/DatingApp/DatingApp.API/bin/Debug/netcoreapp2.0/DatingApp.API.runtimeconfig.dev.json
+/Users/sebastien/www/DatingApp/DatingApp.API/bin/Debug/netcoreapp2.0/DatingApp.API.dll
+/Users/sebastien/www/DatingApp/DatingApp.API/bin/Debug/netcoreapp2.0/DatingApp.API.pdb
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.csprojAssemblyReference.cache
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.csproj.CoreCompileInputs.cache
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.AssemblyInfoInputs.cache
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.AssemblyInfo.cs
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.dll
+/Users/sebastien/www/DatingApp/DatingApp.API/obj/Debug/netcoreapp2.0/DatingApp.API.pdb
