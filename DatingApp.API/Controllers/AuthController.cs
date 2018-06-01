@@ -7,6 +7,7 @@ using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.API.Controllers
@@ -17,8 +18,10 @@ namespace DatingApp.API.Controllers
     {
         // get link to the repository used by this controller
         private readonly IAuthRepository _repo;
-        public AuthController(IAuthRepository repo)
+        private readonly IConfiguration _config;
+        public AuthController(IAuthRepository repo, IConfiguration config)
         {
+            _config = config;
             _repo = repo;
         }
 
@@ -30,11 +33,11 @@ namespace DatingApp.API.Controllers
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
             // Check if username exists and adapt ModelState of DTO if needed
-            if(await _repo.UserExists(userForRegisterDto.Username))
+            if (await _repo.UserExists(userForRegisterDto.Username))
                 ModelState.AddModelError("Username", "Username already exists");
 
             // if sended data dont pass the validation of DTO or if user exists
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
 
@@ -56,13 +59,13 @@ namespace DatingApp.API.Controllers
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
             // If login/password don't match => user is null => Unauthorized
-            if(userFromRepo == null)
+            if (userFromRepo == null)
                 return Unauthorized();
 
             // generate JWT
             var tokenHandler = new JwtSecurityTokenHandler();
             // Generate the decode key
-            var key = Encoding.ASCII.GetBytes("super secret key");
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
             // Describe the token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -73,16 +76,16 @@ namespace DatingApp.API.Controllers
                 }),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key), 
+                    new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha512Signature
                 )
             };
-            
+
             // Create token from description
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(new {tokenString});
+            return Ok(new { tokenString });
         }
     }
 }

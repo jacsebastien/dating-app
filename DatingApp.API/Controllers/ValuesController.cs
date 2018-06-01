@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Controllers
 {
+    // Force authentication to get access to  methods
+    // Need to be configured in Startup.cs
+    [Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -19,9 +23,11 @@ namespace DatingApp.API.Controllers
 
         }
 
+        // No need of authentication for this one
+        // [AllowAnonymous]
         // GET api/values
-        // Use Task<IActionResult> to return a HTTP response in asynchrone mode
         [HttpGet]
+        // Use Task<IActionResult> to return a HTTP response in asynchrone mode
         public async Task<IActionResult> GetValues()
         {
             // get all values in Values table to a list
