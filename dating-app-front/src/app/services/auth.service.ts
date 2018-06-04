@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +22,8 @@ export class AuthService {
                     localStorage.setItem(this.localStorageItem, response.tokenString);
                     this.userToken = response.tokenString;
                 }
-            })
+            }),
+            catchError(this.handleError)
         );
     }
 
@@ -37,11 +40,43 @@ export class AuthService {
     register(model: any): any {
         const httpOptions = this.getRequestOptions();
 
-        return this.http.post(this.baseUrl + 'register', model, httpOptions);
+        return this.http.post(this.baseUrl + 'register', model, httpOptions)
+        .pipe(
+            catchError(this.handleError)
+        );
     }
 
     private getRequestOptions(): {headers: HttpHeaders} {
         const headers = new HttpHeaders({'Content-type': 'application/json'});
         return{headers: headers};
+    }
+
+    private handleError(error: HttpErrorResponse): Observable<string> {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            return new ErrorObservable(error.error.message);
+        }
+
+        const applicationError = error.headers.get("Application-Error");
+
+        if(applicationError) {
+            return new ErrorObservable(applicationError);
+        }
+
+        const serverError = error.error;
+        let modelStateErrors = '';
+
+        if(serverError) {
+            // loop into all error object keys, add it to modelStateErrors with linebreak after it
+            for(const key in serverError) {
+                if(serverError[key]) {
+                    modelStateErrors += serverError[key] + '\n';
+                }
+            }
+        }
+
+        return new ErrorObservable(
+            modelStateErrors || "Server error"
+        );
     }
 }

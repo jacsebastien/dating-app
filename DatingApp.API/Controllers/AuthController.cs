@@ -30,7 +30,9 @@ namespace DatingApp.API.Controllers
         // Need [FromBody] with Dtos tu tells the API where to search for data
         public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
         {
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+            // Avoid error if username if empty
+            if(!string.IsNullOrEmpty(userForRegisterDto.Username))
+                userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
             // Check if username exists and adapt ModelState of DTO if needed
             if (await _repo.UserExists(userForRegisterDto.Username))
