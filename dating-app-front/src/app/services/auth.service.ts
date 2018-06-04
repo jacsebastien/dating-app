@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
@@ -32,11 +33,6 @@ export class AuthService {
         localStorage.removeItem(this.localStorageItem);
     }
 
-    isAuthenticated(): boolean {
-        const token = localStorage.getItem(this.localStorageItem);
-        return !!token;
-    }
-
     register(model: any): any {
         const httpOptions = this.getRequestOptions();
 
@@ -44,6 +40,12 @@ export class AuthService {
         .pipe(
             catchError(this.handleError)
         );
+    }
+
+    isAuthenticated(): boolean {
+        return tokenNotExpired(this.localStorageItem);
+        // const token = localStorage.getItem(this.localStorageItem);
+        // return !!token;
     }
 
     private getRequestOptions(): {headers: HttpHeaders} {
