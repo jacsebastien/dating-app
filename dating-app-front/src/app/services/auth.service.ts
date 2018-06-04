@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 @Injectable()
 export class AuthService {
     baseUrl = 'http://localhost:5000/api/auth/';
+    localStorageItem = 'dating-app-token';
     userToken: any;
 
     constructor(private http: HttpClient) { }
@@ -17,10 +18,20 @@ export class AuthService {
         .pipe(
             tap((response: any) => {
                 if(response) {
-                    localStorage.setItem('token', response.tokenString);
+                    localStorage.setItem(this.localStorageItem, response.tokenString);
                     this.userToken = response.tokenString;
                 }
             })
         );
+    }
+
+    logout() {
+        this.userToken = null;
+        localStorage.removeItem(this.localStorageItem);
+    }
+
+    isAuthenticated(): boolean {
+        const token = localStorage.getItem(this.localStorageItem);
+        return !!token;
     }
 }

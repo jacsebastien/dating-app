@@ -14,12 +14,21 @@ export class NavComponent implements OnInit {
     ngOnInit() {
     }
 
-    login() {
+    login(): void {
         this.authService.login(this.model)
         .subscribe(data => {
             console.log("Logged in successfully");
         }, error => {
             console.log("Failed to login");
         });
+    }
+
+    logout(): void {
+        this.authService.logout();
+        console.log("Logged out");
+    }
+
+    isLoggedIn(): boolean {
+        return this.authService.isAuthenticated();
     }
 }
