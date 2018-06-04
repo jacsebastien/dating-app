@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,7 +63,29 @@ namespace DatingApp.API
             // Show detailled error message on dev env
             if (env.IsDevelopment())
             {
+                // Show complete detailled error message on dev mode
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // Show more user friendly error message on prod mode (default is just the error code)
+                app.UseExceptionHandler(builder => {
+                    // Execute builder middleware to configure error message
+                    builder.Run(async context => {
+                        // Set the status code of the http call to 500 for global exception handler
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                        // Get the error
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+
+                        // return only the error message without all the details
+                        if(error!= null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
             }
 
             // Configure cors to allow all
