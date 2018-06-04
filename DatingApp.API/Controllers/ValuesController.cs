@@ -11,7 +11,8 @@ namespace DatingApp.API.Controllers
 {
     // Force authentication to get access to  methods
     // Need to be configured in Startup.cs
-    [Authorize]
+    // [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
