@@ -3,13 +3,17 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { tokenNotExpired } from 'angular2-jwt';
+import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
-    baseUrl = 'http://localhost:5000/api/auth/';
-    localStorageItem = 'dating-app-token';
-    userToken: any;
+    private baseUrl = 'http://localhost:5000/api/auth/';
+    private localStorageItem = 'dating-app-token';
+
+    private userToken: string;
+    private decodedToken: any;
+
+    private jwtHelper: JwtHelper = new JwtHelper;
 
     constructor(private http: HttpClient) { }
 
@@ -21,6 +25,9 @@ export class AuthService {
             tap((response: any) => {
                 if(response) {
                     localStorage.setItem(this.localStorageItem, response.tokenString);
+                    this.decodedToken = this.jwtHelper.decodeToken(response.tokenString);
+                    console.log(this.decodedToken);
+
                     this.userToken = response.tokenString;
                 }
             }),
@@ -46,6 +53,17 @@ export class AuthService {
         return tokenNotExpired(this.localStorageItem);
         // const token = localStorage.getItem(this.localStorageItem);
         // return !!token;
+    }
+
+    setDecodedToken() {
+        const token = localStorage.getItem(this.localStorageItem);
+        if(token) {
+            this.decodedToken = this.jwtHelper.decodeToken(token);
+        }
+    }
+
+    usernameFromToken() {
+        return this.decodedToken? this.decodedToken.unique_name : "";
     }
 
     private getRequestOptions(): {headers: HttpHeaders} {

@@ -32,6 +32,10 @@ export class NavComponent implements OnInit {
         this.alertify.message("Logged out");
     }
 
+    getUserName() {
+        return this.authService.usernameFromToken();
+    }
+
     isLoggedIn(): boolean {
         return this.authService.isAuthenticated();
     }
