@@ -37,6 +37,9 @@ namespace DatingApp.API
             // configure the database used to be Sequel lite
             // Use the ConnexionString setup in appsettings.json accessible from Configuration property
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnexion")));
+            // Add Custom Sed service to populate Database
+            services.AddTransient<Seed>();
+
             services.AddMvc();
             // allow to manage cors for cross domains calls
             services.AddCors();
@@ -58,7 +61,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             // Show detailled error message on dev env
             if (env.IsDevelopment())
@@ -88,6 +91,8 @@ namespace DatingApp.API
                 });
             }
 
+            // Populate Database with custom Seed class
+            // seeder.SeedUsers();
             // Configure cors to allow all
             // Need to be set BEFORE UseMvc to set headers Before the request is handled by controllers
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
