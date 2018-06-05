@@ -41,7 +41,6 @@ namespace DatingApp.API
             // Add Custom Sed service to populate Database
             services.AddTransient<Seed>();
 
-            services.AddMvc();
             // allow to manage cors for cross domains calls
             services.AddCors();
 
@@ -62,6 +61,11 @@ namespace DatingApp.API
                     ValidateAudience = false
                 };
             });
+
+            services.AddMvc().AddJsonOptions(opt => {
+                // Ignore self referencing loop in json serialisation to avoid errors for infinity loop
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
