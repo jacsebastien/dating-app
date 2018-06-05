@@ -36,7 +36,7 @@
 
             <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
                 <li class="dropdown" dropdown>
-                    <a href="#" class="dropdown-toggle" dropdownToggle>
+                    <a (click)="false" class="dropdown-toggle" dropdownToggle>
                         Welcome {{getUserName() | titlecase}}
                         <span class="caret"></span>
                     </a>
