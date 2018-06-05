@@ -3,13 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { BsDropdownModule } from 'ngx-bootstrap';
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 
 import { AuthService } from './services/auth.service';
+import { AlertifyService } from './services/alertify.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { AlertifyService } from './services/alertify.service';
 
 
 @NgModule({
@@ -22,7 +24,8 @@ import { AlertifyService } from './services/alertify.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BsDropdownModule.forRoot()
   ],
   providers: [AuthService, AlertifyService],
   bootstrap: [AppComponent]
