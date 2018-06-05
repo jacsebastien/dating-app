@@ -34,6 +34,7 @@ namespace DatingApp.API
         {
             // Get Token key from appsettings.json accessible from Configuration
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
+
             // configure the database used to be Sequel lite
             // Use the ConnexionString setup in appsettings.json accessible from Configuration property
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnexion")));
@@ -43,21 +44,24 @@ namespace DatingApp.API
             services.AddMvc();
             // allow to manage cors for cross domains calls
             services.AddCors();
+
             // Implements repositories to access it's methods
             // AddScoped to call it each time an http request is done
             // Good place to test env and use one repository or another in function of Prod/Dev
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
+
             // Configure authentication for JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
