@@ -28,7 +28,7 @@ namespace DatingApp.API.Controllers
             // Transform data to return thanks to Mapper and configured Dto to avoid sending ALL user data like password etc
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
 
-            return Ok(users);
+            return Ok(usersToReturn);
         }
 
         [HttpGet("{id}")]
@@ -38,7 +38,7 @@ namespace DatingApp.API.Controllers
             // Transform data to return thanks to Mapper and configured Dto
             var userToReturn = _mapper.Map<UserForDetailledDto>(user);
 
-            return Ok(user);
+            return Ok(userToReturn);
         }
     }
 }
