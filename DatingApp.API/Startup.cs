@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -43,6 +44,8 @@ namespace DatingApp.API
 
             // allow to manage cors for cross domains calls
             services.AddCors();
+
+            services.AddAutoMapper();
 
             // Implements repositories to access it's methods
             // AddScoped to call it each time an http request is done
