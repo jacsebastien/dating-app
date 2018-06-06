@@ -1,15 +1,31 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
+import { AlertifyService } from '../services/alertify.service';
 
 @Component({
-  selector: 'app-member-list',
-  templateUrl: './member-list.component.html',
-  styleUrls: ['./member-list.component.scss']
+    selector: 'app-member-list',
+    templateUrl: './member-list.component.html',
+    styleUrls: ['./member-list.component.scss']
 })
 export class MemberListComponent implements OnInit {
+    users: User[];
 
-  constructor() { }
+    constructor(
+        private userService: UserService,
+        private alertify: AlertifyService
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.loadUsers();
+    }
 
+    loadUsers(): void {
+        this.userService.getUsers()
+        .subscribe((users: User[]) => {
+            this.users = users;
+        }, error => {
+            this.alertify.error(error);
+        });
+    }
 }

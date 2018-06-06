@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AuthService } from './services/auth.service';
 import { AlertifyService } from './services/alertify.service';
+import { UserService } from './services/user.service';
+import { ErrorsService } from './services/errors.service';
 import { AuthGuard } from './guards/auth.guard';
 
 import { AppComponent } from './app.component';
@@ -22,23 +24,29 @@ import { MessagesComponent } from './messages/messages.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent,
-    HomeComponent,
-    RegisterComponent,
-    MemberListComponent,
-    ListsComponent,
-    MessagesComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    BsDropdownModule.forRoot(),
-    AppRoutingModule
-  ],
-  providers: [AuthService, AlertifyService, AuthGuard],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavComponent,
+        HomeComponent,
+        RegisterComponent,
+        MemberListComponent,
+        ListsComponent,
+        MessagesComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        FormsModule,
+        BsDropdownModule.forRoot(),
+        AppRoutingModule
+    ],
+    providers: [
+        AuthService,
+        AlertifyService,
+        AuthGuard,
+        UserService,
+        ErrorsService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

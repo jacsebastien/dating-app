@@ -24,11 +24,11 @@ export class UserService {
     }
 
     private getHeaders(): {headers: HttpHeaders} {
-        const headers = new HttpHeaders({ 'Content-type': 'application/json'});
+        let headers = new HttpHeaders({ 'Content-type': 'application/json'});
         const token = localStorage.getItem(this.localStorageItem);
-
         if(token) {
-            headers.append( 'Authorization', 'Bearer ' + token );
+            headers = headers.append('Authorization', 'Bearer ' + token);
+            console.log(headers);
         }
 
         return { headers: headers };
