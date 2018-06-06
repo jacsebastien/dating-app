@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, tap } from 'rxjs/operators';
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
+import { environment } from '../../environments/environment';
+import { ErrorsService } from './errors.service';
 
 @Injectable()
 export class AuthService {
     private baseUrl = 'http://localhost:5000/api/auth/';
-    private localStorageItem = 'dating-app-token';
+    private localStorageItem = environment.localStorageToken;
 
     private userToken: string;
     private decodedToken: any;
 
     private jwtHelper: JwtHelper = new JwtHelper;
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private errorsSrv: ErrorsService
+    ) { }
 
     login(model: any): any {
-        const httpOptions = this.getRequestOptions();
+        const httpOptions = this.getHeaders();
 
         return this.http.post(this.baseUrl + 'login', model, httpOptions)
         .pipe(
@@ -31,7 +34,7 @@ export class AuthService {
                     this.userToken = response.tokenString;
                 }
             }),
-            catchError(this.handleError)
+            catchError(this.errorsSrv.handleHttpError)
         );
     }
 
@@ -41,11 +44,11 @@ export class AuthService {
     }
 
     register(model: any): any {
-        const httpOptions = this.getRequestOptions();
+        const httpOptions = this.getHeaders();
 
         return this.http.post(this.baseUrl + 'register', model, httpOptions)
         .pipe(
-            catchError(this.handleError)
+            catchError(this.errorsSrv.handleHttpError)
         );
     }
 
@@ -66,37 +69,8 @@ export class AuthService {
         return this.decodedToken? this.decodedToken.unique_name : "";
     }
 
-    private getRequestOptions(): {headers: HttpHeaders} {
+    private getHeaders(): {headers: HttpHeaders} {
         const headers = new HttpHeaders({'Content-type': 'application/json'});
-        return{headers: headers};
-    }
-
-    private handleError(error: HttpErrorResponse): Observable<string> {
-        if (error.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            return new ErrorObservable(error.error.message);
-        }
-
-        const applicationError = error.headers.get("Application-Error");
-
-        if(applicationError) {
-            return new ErrorObservable(applicationError);
-        }
-
-        const serverError = error.error;
-        let modelStateErrors = '';
-
-        if(serverError) {
-            // loop into all error object keys, add it to modelStateErrors with linebreak after it
-            for(const key in serverError) {
-                if(serverError[key]) {
-                    modelStateErrors += serverError[key] + '\n';
-                }
-            }
-        }
-
-        return new ErrorObservable(
-            modelStateErrors || "Server error"
-        );
+        return {headers: headers};
     }
 }
