@@ -8,7 +8,7 @@ import { ErrorsService } from './errors.service';
 
 @Injectable()
 export class UserService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = environment.apiUrl + 'users/';
     private localStorageItem = environment.localStorageToken;
 
     constructor(
@@ -17,7 +17,14 @@ export class UserService {
     ) { }
 
     getUsers(): Observable<User[] | string> {
-        return this.http.get<User[]>(this.baseUrl + 'users', this.getHeaders())
+        return this.http.get<User[]>(this.baseUrl, this.getHeaders())
+        .pipe(
+            catchError(this.errorsSrv.handleHttpError)
+        );
+    }
+
+    getUser(id: number): Observable<User | string> {
+        return this.http.get<User>(this.baseUrl + id, this.getHeaders())
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
