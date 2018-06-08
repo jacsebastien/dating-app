@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { environment } from '../../environments/environment';
 import { ErrorsService } from './errors.service';
+import { AuthUser } from '../models/auth-user.model';
 
 @Injectable()
 export class AuthService {
@@ -23,15 +24,15 @@ export class AuthService {
     login(model: any): any {
         const httpOptions = this.getHeaders();
 
-        return this.http.post(this.baseUrl + 'login', model, httpOptions)
+        return this.http.post<AuthUser>(this.baseUrl + 'login', model, httpOptions)
         .pipe(
-            tap((user: any) => {
-                if(user) {
-                    localStorage.setItem(this.localStorageItem, user.tokenString);
-                    this.decodedToken = this.jwtHelperSrv.decodeToken(user.tokenString);
-                    console.log(this.decodedToken);
+            tap(authUser => {
+                if(authUser) {
+                    localStorage.setItem(this.localStorageItem, authUser.tokenString);
+                    this.decodedToken = this.jwtHelperSrv.decodeToken(authUser.tokenString);
+                    // console.log(this.decodedToken);
 
-                    this.userToken = user.tokenString;
+                    this.userToken = authUser.tokenString;
                 }
             }),
             catchError(this.errorsSrv.handleHttpError)
@@ -54,13 +55,12 @@ export class AuthService {
 
     isAuthenticated(): boolean {
         const token = this.jwtHelperSrv.tokenGetter();
+
         if(!token) {
             return false;
         }
 
-        return !this.jwtHelperSrv.isTokenExpired(this.localStorageItem);
-        // const token = localStorage.getItem(this.localStorageItem);
-        // return !!token;
+        return !this.jwtHelperSrv.isTokenExpired(token);
     }
 
     setDecodedToken() {
