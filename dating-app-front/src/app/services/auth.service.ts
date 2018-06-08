@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 import { environment } from '../../environments/environment';
 import { ErrorsService } from './errors.service';
 
@@ -13,11 +14,10 @@ export class AuthService {
     private userToken: string;
     private decodedToken: any;
 
-    private jwtHelper: JwtHelper = new JwtHelper;
-
     constructor(
         private http: HttpClient,
-        private errorsSrv: ErrorsService
+        private errorsSrv: ErrorsService,
+        private jwtHelperSrv: JwtHelperService
     ) { }
 
     login(model: any): any {
@@ -25,13 +25,13 @@ export class AuthService {
 
         return this.http.post(this.baseUrl + 'login', model, httpOptions)
         .pipe(
-            tap((response: any) => {
-                if(response) {
-                    localStorage.setItem(this.localStorageItem, response.tokenString);
-                    this.decodedToken = this.jwtHelper.decodeToken(response.tokenString);
+            tap((user: any) => {
+                if(user) {
+                    localStorage.setItem(this.localStorageItem, user.tokenString);
+                    this.decodedToken = this.jwtHelperSrv.decodeToken(user.tokenString);
                     console.log(this.decodedToken);
 
-                    this.userToken = response.tokenString;
+                    this.userToken = user.tokenString;
                 }
             }),
             catchError(this.errorsSrv.handleHttpError)
@@ -53,7 +53,12 @@ export class AuthService {
     }
 
     isAuthenticated(): boolean {
-        return tokenNotExpired(this.localStorageItem);
+        const token = this.jwtHelperSrv.tokenGetter();
+        if(!token) {
+            return false;
+        }
+
+        return !this.jwtHelperSrv.isTokenExpired(this.localStorageItem);
         // const token = localStorage.getItem(this.localStorageItem);
         // return !!token;
     }
@@ -61,7 +66,7 @@ export class AuthService {
     setDecodedToken() {
         const token = localStorage.getItem(this.localStorageItem);
         if(token) {
-            this.decodedToken = this.jwtHelper.decodeToken(token);
+            this.decodedToken = this.jwtHelperSrv.decodeToken(token);
         }
     }
 

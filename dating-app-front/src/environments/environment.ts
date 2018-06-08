@@ -5,6 +5,7 @@
 
 export const environment = {
     production: false,
+    apiDomain: 'http://localhost:5000/',
     apiUrl: 'http://localhost:5000/api/',
     localStorageToken: 'dating-app-token'
 };
