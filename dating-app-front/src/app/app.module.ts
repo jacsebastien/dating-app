@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -44,9 +44,10 @@ export function tokenGetter() {
     imports: [
         BrowserModule,
         FormsModule,
-        BsDropdownModule.forRoot(),
-        AppRoutingModule,
         HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
         JwtModule.forRoot({
             config: {
               tokenGetter: tokenGetter,
