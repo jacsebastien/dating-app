@@ -1,28 +1,28 @@
 <div class="container">
     <div class="row">
-        <h1>{{user?.knowAs}}'s Profile</h1>
+        <h1>{{user.knowAs}}'s Profile</h1>
     </div>
     <div class="row">
         <div class="col-sm-4">
             <div class="panel panel-default">
-                <img class="profile-image thumbnail" src="{{user?.photoUrl}}" alt="{{user?.knowAs}}">
+                <img class="profile-image thumbnail" src="{{user.photoUrl}}" alt="{{user.knowAs}}">
                 <div class="panel-body">
                     <ul>
                         <li>
                             <span class="user-label">Location: </span>
-                            <span class="data">{{user?.city}}, {{user?.country}}</span>
+                            <span class="data">{{user.city}}, {{user.country}}</span>
                         </li>
                         <li>
                             <span class="user-label">Age: </span>
-                            <span class="data">{{user?.age}}</span>
+                            <span class="data">{{user.age}}</span>
                         </li>
                         <li>
                             <span class="user-label">Last Active: </span>
-                            <span class="data">{{user?.lastActive}}</span>
+                            <span class="data">{{user.lastActive}}</span>
                         </li>
                         <li>
                             <span class="user-label">Member Since: </span>
-                            <span class="data">{{user?.created}}</span>
+                            <span class="data">{{user.created}}</span>
                         </li>
                     </ul>
                 </div>
@@ -41,15 +41,15 @@
         <div class="col-sm-8">
             <div class="tab-panel">
                 <tabset class="member-tabset">
-                    <tab heading="About {{user?.knowAs}}">
+                    <tab heading="About {{user.knowAs}}">
                         <h3>Description:</h3>
-                        <p>{{user?.introduction}}</p>
+                        <p>{{user.introduction}}</p>
                         <h3>Looking For:</h3>
-                        <p>{{user?.lookingFor}}</p>
+                        <p>{{user.lookingFor}}</p>
                     </tab>
                     <tab heading="Interests">
                         <h3>Description:</h3>
-                        <p>{{user?.interests}}</p>
+                        <p>{{user.interests}}</p>
                     </tab>
                     <tab heading="Photos">
                         <p>Photo's will go here</p>

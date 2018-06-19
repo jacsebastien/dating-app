@@ -13,6 +13,7 @@ import { AlertifyService } from './services/alertify.service';
 import { UserService } from './services/user.service';
 import { ErrorsService } from './services/errors.service';
 import { AuthGuard } from './guards/auth.guard';
+import { MemberDetailResolver } from './resolvers/member-detail-resolver.service';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -24,6 +25,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { environment } from '../environments/environment';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberListResolver } from './resolvers/member-list-resolver.service';
 
 export function tokenGetter() {
     return localStorage.getItem(environment.localStorageToken);
@@ -61,7 +63,9 @@ export function tokenGetter() {
         AlertifyService,
         AuthGuard,
         UserService,
-        ErrorsService
+        ErrorsService,
+        MemberDetailResolver,
+        MemberListResolver
     ],
     bootstrap: [AppComponent]
 })
