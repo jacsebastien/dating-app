@@ -1,3 +1,66 @@
-<p>
-  {{user.knowAs}}
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h1>Your Profile</h1>
+        </div>
+        <div class="col-sm-8">
+            <section class="alert alert-info">
+                <p><span>Information:</span> You have made changes. Any unsaved changes will be lost!</p>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <img class="profile-image thumbnail" src="{{user.photoUrl}}" alt="{{user.knowAs}}">
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            <span class="user-label">Location: </span>
+                            <span class="data">{{user.city}}, {{user.country}}</span>
+                        </li>
+                        <li>
+                            <span class="user-label">Age: </span>
+                            <span class="data">{{user.age}}</span>
+                        </li>
+                        <li>
+                            <span class="user-label">Last Active: </span>
+                            <span class="data">{{user.lastActive}}</span>
+                        </li>
+                        <li>
+                            <span class="user-label">Member Since: </span>
+                            <span class="data">{{user.created}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-success btn-block">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="tab-panel">
+                <tabset class="member-tabset">
+                    <tab heading="Edit Profile">
+                        <h3>Description:</h3>
+                        <textarea class="form-control" rows="6" name="introduction" [(ngModel)]="user.introduction"></textarea>
+                        <h3>Looking For:</h3>
+                        <textarea class="form-control" rows="6" name="lookingFor" [(ngModel)]="user.lookingFor"></textarea>
+                        <h3>Interests:</h3>
+                        <textarea class="form-control" rows="6" name="interests" [(ngModel)]="user.interests"></textarea>
+                        <h3>Location Details: </h3>
+                        <div class="form-inline">
+                            <label for="city">City</label>
+                            <input class="form-control" type="text" name="city" [(ngModel)]="user.city">
+                            <label for="city">Country</label>
+                            <input class="form-control" type="text" name="country" [(ngModel)]="user.country">
+                        </div>
+                    </tab>
+                    <tab heading="Edit Photos">
+                        <p>Edit photos will go here</p>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>
