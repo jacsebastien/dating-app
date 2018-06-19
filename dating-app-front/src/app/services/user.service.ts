@@ -30,6 +30,13 @@ export class UserService {
         );
     }
 
+    updateUser(id: number, user: User): Observable<string | Object> {
+        return this.http.put(this.baseUrl + id, user, this.getHeaders())
+        .pipe(
+            catchError(this.errorsSrv.handleHttpError)
+        );
+    }
+
     private getHeaders(): {headers: HttpHeaders} {
         let headers = new HttpHeaders({ 'Content-type': 'application/json'});
         const token = localStorage.getItem(this.localStorageItem);
