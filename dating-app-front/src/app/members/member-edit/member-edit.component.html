@@ -4,7 +4,7 @@
             <h1>Your Profile</h1>
         </div>
         <div class="col-sm-8">
-            <section class="alert alert-info">
+            <section class="alert alert-info" [hidden]="!editForm.dirty">
                 <p><span>Information:</span> You have made changes. Any unsaved changes will be lost!</p>
             </section>
         </div>
@@ -34,7 +34,8 @@
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <button class="btn btn-success btn-block">Save Changes</button>
+                    <!-- form="editForm" associate the button to the form with the id "editForm" to trigger ngSubmit action -->
+                    <button [disabled]="!editForm.dirty" form="editForm" class="btn btn-success btn-block">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -42,19 +43,21 @@
             <div class="tab-panel">
                 <tabset class="member-tabset">
                     <tab heading="Edit Profile">
-                        <h3>Description:</h3>
-                        <textarea class="form-control" rows="6" name="introduction" [(ngModel)]="user.introduction"></textarea>
-                        <h3>Looking For:</h3>
-                        <textarea class="form-control" rows="6" name="lookingFor" [(ngModel)]="user.lookingFor"></textarea>
-                        <h3>Interests:</h3>
-                        <textarea class="form-control" rows="6" name="interests" [(ngModel)]="user.interests"></textarea>
-                        <h3>Location Details: </h3>
-                        <div class="form-inline">
-                            <label for="city">City</label>
-                            <input class="form-control" type="text" name="city" [(ngModel)]="user.city">
-                            <label for="city">Country</label>
-                            <input class="form-control" type="text" name="country" [(ngModel)]="user.country">
-                        </div>
+                        <form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()" >
+                            <h3>Description:</h3>
+                            <textarea class="form-control" rows="6" name="introduction" [(ngModel)]="user.introduction"></textarea>
+                            <h3>Looking For:</h3>
+                            <textarea class="form-control" rows="6" name="lookingFor" [(ngModel)]="user.lookingFor"></textarea>
+                            <h3>Interests:</h3>
+                            <textarea class="form-control" rows="6" name="interests" [(ngModel)]="user.interests"></textarea>
+                            <h3>Location Details: </h3>
+                            <div class="form-inline">
+                                <label for="city">City</label>
+                                <input class="form-control" type="text" name="city" [(ngModel)]="user.city">
+                                <label for="city">Country</label>
+                                <input class="form-control" type="text" name="country" [(ngModel)]="user.country">
+                            </div>
+                        </form>
                     </tab>
                     <tab heading="Edit Photos">
                         <p>Edit photos will go here</p>
