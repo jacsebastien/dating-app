@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
 import { ErrorsService } from './errors.service';
 import { AuthUser } from '../models/auth-user.model';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
         private jwtHelperSrv: JwtHelperService
     ) { }
 
-    login(model: any): any {
+    login(model: any): Observable<AuthUser | string> {
         const httpOptions = this.getHeaders();
 
         return this.http.post<AuthUser>(this.baseUrl + 'login', model, httpOptions)
@@ -39,7 +40,7 @@ export class AuthService {
         );
     }
 
-    logout() {
+    logout(): void {
         this.userToken = null;
         localStorage.removeItem(this.localStorageItem);
     }
@@ -63,14 +64,18 @@ export class AuthService {
         return !this.jwtHelperSrv.isTokenExpired(token);
     }
 
-    setDecodedToken() {
+    setDecodedToken(): void {
         const token = localStorage.getItem(this.localStorageItem);
         if(token) {
             this.decodedToken = this.jwtHelperSrv.decodeToken(token);
         }
     }
 
-    usernameFromToken() {
+    getDecodedToken(): any {
+        return this.decodedToken;
+    }
+
+    usernameFromToken(): string {
         return this.decodedToken? this.decodedToken.unique_name : "";
     }
 
