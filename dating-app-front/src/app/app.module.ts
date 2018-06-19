@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -14,6 +15,7 @@ import { UserService } from './services/user.service';
 import { ErrorsService } from './services/errors.service';
 import { AuthGuard } from './guards/auth.guard';
 import { MemberDetailResolver } from './resolvers/member-detail-resolver.service';
+import { MemberListResolver } from './resolvers/member-list-resolver.service';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -25,7 +27,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { environment } from '../environments/environment';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { MemberListResolver } from './resolvers/member-list-resolver.service';
 
 export function tokenGetter() {
     return localStorage.getItem(environment.localStorageToken);
@@ -56,7 +57,8 @@ export function tokenGetter() {
               whitelistedDomains: [environment.apiDomain],
               blacklistedRoutes: [environment.apiUrl + 'auth/']
             }
-        })
+        }),
+        NgxGalleryModule
     ],
     providers: [
         AuthService,
