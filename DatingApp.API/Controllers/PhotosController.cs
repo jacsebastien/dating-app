@@ -68,11 +68,12 @@ namespace DatingApp.API.Controllers
 
             var file = photoDto.File;
 
+            // Create an object to recieve response from Cloudinary after upload
             var uploadResult = new ImageUploadResult();
 
             if (file.Length > 0)
             {
-                // read uploaded files content and upload them to cloudinary
+                // read in memory uploaded files content and upload them to cloudinary
                 using (var stream = file.OpenReadStream())
                 {
                     var uploadParams = new ImageUploadParams()
@@ -84,11 +85,11 @@ namespace DatingApp.API.Controllers
                 }
             }
 
-            // use from cloudinary after upload
+            // store result from cloudinary after upload
             photoDto.Url = uploadResult.Uri.ToString();
             photoDto.PublicId = uploadResult.PublicId;
 
-            // Store data in model
+            // Create a photo object from model with uploaded data and corresponding user
             var photo = _mapper.Map<Photo>(photoDto);
             photo.User = user;
 
@@ -96,12 +97,14 @@ namespace DatingApp.API.Controllers
             if (!user.Photos.Any(m => m.IsMain))
                 photo.IsMain = true;
 
+            // Store data in model
             user.Photos.Add(photo);
 
             // If save is success, return the uploaded photo to user. (details of photo)
             if (await _repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
+                // Use GetPhoto route to retrieve data to send back to user
                 return CreatedAtRoute("GetPhoto", new { id =  photo.Id }, photoToReturn);
             }
 
