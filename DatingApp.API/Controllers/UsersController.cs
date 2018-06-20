@@ -54,8 +54,6 @@ namespace DatingApp.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // get the id of the current logged user thx to the Token sent in the header
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userFromRepo = await _repo.GetUser(id);
 
             if (userFromRepo == null)
@@ -63,7 +61,11 @@ namespace DatingApp.API.Controllers
                 // User $ to be able to put properties inside string
                 return NotFound($"Could not find user with an ID of {id}");
             }
+
+            // get the id of the current logged user thx to the Token sent in the header
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             
+            // Compare with passed ID to verify if it's the right user 
             if (currentUserId != userFromRepo.Id)
             {
                 return Unauthorized();
