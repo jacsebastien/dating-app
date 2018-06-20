@@ -30,6 +30,7 @@ import { environment } from '../environments/environment';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 export function tokenGetter() {
     return localStorage.getItem(environment.localStorageToken);
@@ -47,7 +48,8 @@ export function tokenGetter() {
         MemberCardComponent,
         MemberDetailComponent,
         MemberEditComponent,
-        MemberEditComponent
+        MemberEditComponent,
+        PhotoEditorComponent
     ],
     imports: [
         BrowserModule,
