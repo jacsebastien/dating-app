@@ -45,6 +45,8 @@ namespace DatingApp.API
             // allow to manage cors for cross domains calls
             services.AddCors();
 
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
             services.AddAutoMapper();
 
             // Implements repositories to access it's methods

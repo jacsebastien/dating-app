@@ -10,6 +10,8 @@ namespace DatingApp.API.Models
         public DateTime DateAdded { get; set; }
         public bool IsMain { get; set; }
 
+        public string PublicId { get; set; }
+
         // With User keys in Photo Class, force EntityFramework to use Cascading deletion (If user is deleted, all photos are deleted) 
         // in place of Restrict deletion (Delete user, keep photos and set UserId to null)
         public User User { get; set; }
