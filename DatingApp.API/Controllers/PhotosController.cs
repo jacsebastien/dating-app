@@ -87,6 +87,9 @@ namespace DatingApp.API.Controllers
                 }
             }
 
+            if(uploadResult.Uri == null || uploadResult.PublicId == null)
+                return BadRequest("Could not upload the photo");
+
             // Store result from cloudinary after upload
             photoDto.Url = uploadResult.Uri.ToString();
             photoDto.PublicId = uploadResult.PublicId;
