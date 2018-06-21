@@ -30,15 +30,22 @@ export class UserService {
         );
     }
 
-    updateUser(userId: number, user: User): Observable<string | Object> {
-        return this.http.put(this.baseUrl + userId, user, this.getHeaders())
+    updateUser(userId: number, user: User): Observable<string | {}> {
+        return this.http.put<{}>(this.baseUrl + userId, user, this.getHeaders())
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
     }
 
-    setMainPhoto(userId: number, photoId: number): Observable<string | Object> {
-        return this.http.post(this.baseUrl + userId + `/photos/${photoId}/setMain`, {}, this.getHeaders())
+    setMainPhoto(userId: number, photoId: number): Observable<string | {}> {
+        return this.http.post<{}>(this.baseUrl + userId + `/photos/${photoId}/setMain`, {}, this.getHeaders())
+        .pipe(
+            catchError(this.errorsSrv.handleHttpError)
+        );
+    }
+
+    deletePhoto(userId: number, photoId: number): Observable<string | {}> {
+        return this.http.delete<{}>(this.baseUrl + userId + `/photos/${photoId}`, this.getHeaders())
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
