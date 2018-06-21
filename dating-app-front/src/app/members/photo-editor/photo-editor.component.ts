@@ -13,11 +13,15 @@ import { AlertifyService } from '../../services/alertify.service';
 })
 export class PhotoEditorComponent implements OnInit {
     @Input() photos: Photo[];
+
+    private baseUrl = environment.apiUrl;
+    private tokenKey = environment.localStorageToken;
+    private userId: number;
+
+    mainPhoto: Photo;
+
     uploader: FileUploader;
     hasBaseDropZoneOver = false;
-    baseUrl = environment.apiUrl;
-    tokenKey = environment.localStorageToken;
-    userId: number;
 
     constructor(
         private authService: AuthService,
@@ -56,7 +60,12 @@ export class PhotoEditorComponent implements OnInit {
     setMainPhoto(photo: Photo): void {
         this.userService.setMainPhoto(this.userId, photo.id)
         .subscribe(() => {
-            console.log("Success set to main");
+            this.mainPhoto = this.photos.find(photoItem => photoItem.isMain);
+
+            this.mainPhoto.isMain = false;
+            photo.isMain = true;
+
+            this.alertify.success("Photo set to main");
         }, error => {
             this.alertify.error(error);
         });
