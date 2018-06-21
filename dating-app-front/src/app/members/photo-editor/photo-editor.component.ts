@@ -54,6 +54,15 @@ export class PhotoEditorComponent implements OnInit {
             if (response) {
                 const res: Photo = JSON.parse(response);
                 this.photos.push(res);
+                this.alertify.success("Photo uploaded");
+            }
+        };
+
+        this.uploader.onErrorItem = (item, response, status, headers) => {
+            if (response) {
+                this.alertify.error(response);
+            } else {
+                this.alertify.error("Trouble happened on photo upload");
             }
         };
     }
