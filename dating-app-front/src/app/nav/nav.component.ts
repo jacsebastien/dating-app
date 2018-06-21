@@ -38,8 +38,14 @@ export class NavComponent implements OnInit {
         this.router.navigate(['/home']);
     }
 
-    getUserName() {
+    getUserName(): string {
         return this.authService.usernameFromToken();
+    }
+
+    getPhotoUrl(): string {
+        const currentUser = this.authService.getCurrentUser();
+
+        return currentUser ? currentUser.photoUrl : '';
     }
 
     isLoggedIn(): boolean {

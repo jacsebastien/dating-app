@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { environment } from '../../environments/environment';
 import { ErrorsService } from './errors.service';
 import { AuthUser } from '../models/auth-user.model';
-import { Observable } from 'rxjs/Observable';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
     private baseUrl = 'http://localhost:5000/api/auth/';
-    private localStorageItem = environment.localStorageToken;
+    private localStorageToken = environment.localStorageToken;
+    private localStorageUser = environment.localStorageUser;
 
     private userToken: string;
     private decodedToken: any;
+    private currentUser: User;
 
     constructor(
         private http: HttpClient,
@@ -29,11 +33,12 @@ export class AuthService {
         .pipe(
             tap(authUser => {
                 if(authUser) {
-                    localStorage.setItem(this.localStorageItem, authUser.tokenString);
-                    this.decodedToken = this.jwtHelperSrv.decodeToken(authUser.tokenString);
-                    // console.log(this.decodedToken);
+                    localStorage.setItem(this.localStorageToken, authUser.tokenString);
+                    localStorage.setItem(this.localStorageUser, JSON.stringify(authUser.user));
 
                     this.userToken = authUser.tokenString;
+                    this.decodedToken = this.jwtHelperSrv.decodeToken(authUser.tokenString);
+                    this.currentUser = authUser.user;
                 }
             }),
             catchError(this.errorsSrv.handleHttpError)
@@ -42,7 +47,9 @@ export class AuthService {
 
     logout(): void {
         this.userToken = null;
-        localStorage.removeItem(this.localStorageItem);
+        this.currentUser = null;
+        localStorage.removeItem(this.localStorageToken);
+        localStorage.removeItem(this.localStorageUser);
     }
 
     register(model: any): any {
@@ -65,7 +72,7 @@ export class AuthService {
     }
 
     setDecodedToken(): void {
-        const token = localStorage.getItem(this.localStorageItem);
+        const token = localStorage.getItem(this.localStorageToken);
         if(token) {
             this.decodedToken = this.jwtHelperSrv.decodeToken(token);
         }
@@ -73,6 +80,17 @@ export class AuthService {
 
     getDecodedToken(): any {
         return this.decodedToken;
+    }
+
+    setCurrentUser(): void {
+        const user: User = JSON.parse(localStorage.getItem(this.localStorageUser));
+        if(user) {
+            this.currentUser = user;
+        }
+    }
+
+    getCurrentUser(): User {
+        return this.currentUser;
     }
 
     usernameFromToken(): string {
