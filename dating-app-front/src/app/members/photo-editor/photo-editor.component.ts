@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Photo } from '../../models/photo.model';
 import { environment } from '../../../environments/environment';
@@ -13,6 +13,7 @@ import { AlertifyService } from '../../services/alertify.service';
 })
 export class PhotoEditorComponent implements OnInit {
     @Input() photos: Photo[];
+    @Output() mainPhotoChanged = new EventEmitter<string>();
 
     private baseUrl = environment.apiUrl;
     private tokenKey = environment.localStorageToken;
@@ -62,8 +63,12 @@ export class PhotoEditorComponent implements OnInit {
         .subscribe(() => {
             this.mainPhoto = this.photos.find(photoItem => photoItem.isMain);
 
+            // Switch main properties
             this.mainPhoto.isMain = false;
             photo.isMain = true;
+
+            // Update the url of the main photo in parent component
+            this.mainPhotoChanged.emit(photo.url);
 
             this.alertify.success("Photo set to main");
         }, error => {
