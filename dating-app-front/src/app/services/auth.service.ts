@@ -9,9 +9,12 @@ import { environment } from '../../environments/environment';
 import { ErrorsService } from './errors.service';
 import { AuthUser } from '../models/auth-user.model';
 import { User } from '../models/user.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
+    private photoUrl = new BehaviorSubject<string>('../../assets/user.png');
+
     private baseUrl = 'http://localhost:5000/api/auth/';
     private localStorageToken = environment.localStorageToken;
     private localStorageUser = environment.localStorageUser;
@@ -19,6 +22,8 @@ export class AuthService {
     private userToken: string;
     private decodedToken: any;
     private currentUser: User;
+
+    currentPhotoUrl: Observable<string> = this.photoUrl.asObservable();
 
     constructor(
         private http: HttpClient,
@@ -34,11 +39,12 @@ export class AuthService {
             tap(authUser => {
                 if(authUser) {
                     localStorage.setItem(this.localStorageToken, authUser.tokenString);
-                    localStorage.setItem(this.localStorageUser, JSON.stringify(authUser.user));
 
                     this.userToken = authUser.tokenString;
                     this.decodedToken = this.jwtHelperSrv.decodeToken(authUser.tokenString);
                     this.currentUser = authUser.user;
+
+                    this.changeMemberPhoto(this.currentUser.photoUrl);
                 }
             }),
             catchError(this.errorsSrv.handleHttpError)
@@ -59,6 +65,13 @@ export class AuthService {
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
+    }
+
+    changeMemberPhoto(photoUrl: string): void {
+        this.currentUser.photoUrl = photoUrl;
+        localStorage.setItem(this.localStorageUser, JSON.stringify(this.currentUser));
+
+        this.photoUrl.next(photoUrl);
     }
 
     isAuthenticated(): boolean {
@@ -86,11 +99,8 @@ export class AuthService {
         const user: User = JSON.parse(localStorage.getItem(this.localStorageUser));
         if(user) {
             this.currentUser = user;
+            this.changeMemberPhoto(user.photoUrl);
         }
-    }
-
-    getCurrentUser(): User {
-        return this.currentUser;
     }
 
     usernameFromToken(): string {

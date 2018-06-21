@@ -67,8 +67,7 @@ export class PhotoEditorComponent implements OnInit {
             this.mainPhoto.isMain = false;
             photo.isMain = true;
 
-            // Update the url of the main photo in parent component
-            this.mainPhotoChanged.emit(photo.url);
+            this.authService.changeMemberPhoto(photo.url);
 
             this.alertify.success("Photo set to main");
         }, error => {
