@@ -58,12 +58,12 @@ namespace DatingApp.API.Controllers
         {
             var user = await _repo.GetUser(userId);
 
-            if (user == null)
+            if(user == null)
                 return BadRequest("Could not find user");
 
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (currentUserId != user.Id)
+            if(currentUserId != user.Id)
                 return Unauthorized();
 
             var file = photoDto.File;
@@ -71,7 +71,7 @@ namespace DatingApp.API.Controllers
             // Create an object to recieve response from Cloudinary after upload
             var uploadResult = new ImageUploadResult();
 
-            if (file.Length > 0)
+            if(file.Length > 0)
             {
                 // read in memory uploaded files content and upload them to cloudinary
                 using (var stream = file.OpenReadStream())
@@ -94,14 +94,14 @@ namespace DatingApp.API.Controllers
             photo.User = user;
 
             // Set uploaded photo as main photo if no one exists
-            if (!user.Photos.Any(m => m.IsMain))
+            if(!user.Photos.Any(m => m.IsMain))
                 photo.IsMain = true;
 
             // Store data in model
             user.Photos.Add(photo);
 
             // If save is success, return the uploaded photo to user. (details of photo)
-            if (await _repo.SaveAll())
+            if(await _repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
                 // Use GetPhoto route to retrieve data to send back to user
@@ -109,6 +109,44 @@ namespace DatingApp.API.Controllers
             }
 
             return BadRequest("Could not add the photo");
+        }
+
+        [HttpPost("{photoId}/setMain")]
+        public async Task<IActionResult> SetMainPhoto(int userId, int photoId)
+        {
+            var user = await _repo.GetUser(userId);
+
+            if(user == null)
+                return BadRequest("Could not find user");
+
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if(currentUserId != user.Id)
+                return Unauthorized();
+
+            // check if photoId match with one of the user's photos
+            if(!user.Photos.Any(p => p.Id == photoId))
+                return Unauthorized();
+
+            var photoFromRepo = await _repo.GetPhoto(photoId);
+
+            if(photoFromRepo == null)
+                return NotFound();
+
+            if(photoFromRepo.IsMain)
+                return BadRequest("Already the main photo");
+
+            var currenMainPhoto = await _repo.GetMainPhoto(userId);
+
+            if(currenMainPhoto != null)
+                currenMainPhoto.IsMain = false;
+
+            photoFromRepo.IsMain = true;
+
+            if(await _repo.SaveAll())
+                return NoContent();     // 200
+
+            return BadRequest("Could not set photo to main");
         }
     }
 }
