@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -65,7 +66,8 @@ export function tokenGetter() {
               blacklistedRoutes: [environment.apiUrl + 'auth/']
             }
         }),
-        NgxGalleryModule
+        NgxGalleryModule,
+        FileUploadModule
     ],
     providers: [
         AuthService,

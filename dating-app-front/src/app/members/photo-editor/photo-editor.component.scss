@@ -3,3 +3,20 @@ img.thumbnail {
     width: 100px;
     margin-bottom: 2px;
 }
+
+/* Default class applied to drop zones on over */
+.nv-file-over {
+    border: solid 1px #007196;
+}
+
+input[type="file"] {
+    color: transparent;
+}
+
+.upload-queue {
+    margin-bottom: 40px;
+}
+
+.drop-zone {
+    text-align: center;
+}
