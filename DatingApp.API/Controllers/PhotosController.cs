@@ -73,19 +73,21 @@ namespace DatingApp.API.Controllers
 
             if(file.Length > 0)
             {
-                // read in memory uploaded files content and upload them to cloudinary
+                // Read in memory uploaded file content and upload it to cloudinary
                 using (var stream = file.OpenReadStream())
                 {
+                    // Crop the image to fit maximum size around the face of the person and upload it to cloudinary
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription(file.Name, stream)
+                        File = new FileDescription(file.Name, stream),
+                        Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
                     };
 
                     uploadResult = _cloudinary.Upload(uploadParams);
                 }
             }
 
-            // store result from cloudinary after upload
+            // Store result from cloudinary after upload
             photoDto.Url = uploadResult.Uri.ToString();
             photoDto.PublicId = uploadResult.PublicId;
 
