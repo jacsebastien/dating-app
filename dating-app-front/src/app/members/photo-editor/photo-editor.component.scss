@@ -1,7 +1,11 @@
 img.thumbnail {
     height: 100px;
     width: 100px;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
+}
+
+img.main-photo {
+    border: solid 2px #007196;
 }
 
 /* Default class applied to drop zones on over */

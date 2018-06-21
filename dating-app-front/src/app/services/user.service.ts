@@ -30,8 +30,15 @@ export class UserService {
         );
     }
 
-    updateUser(id: number, user: User): Observable<string | Object> {
-        return this.http.put(this.baseUrl + id, user, this.getHeaders())
+    updateUser(userId: number, user: User): Observable<string | Object> {
+        return this.http.put(this.baseUrl + userId, user, this.getHeaders())
+        .pipe(
+            catchError(this.errorsSrv.handleHttpError)
+        );
+    }
+
+    setMainPhoto(userId: number, photoId: number): Observable<string | Object> {
+        return this.http.post(this.baseUrl + userId + `/photos/${photoId}/setMain`, {}, this.getHeaders())
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
