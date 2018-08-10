@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import { AlertifyService } from '../services/alertify.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class MemberListResolver implements Resolve<User[]> {
