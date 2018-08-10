@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { AlertifyService } from '../services/alertify.service';
 
@@ -15,15 +15,12 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private alertify: AlertifyService
+        private alertify: AlertifyService,
+        private fb: FormBuilder
     ) { }
 
     ngOnInit() {
-        this.registerForm = new FormGroup({
-            username: new FormControl('', Validators.required),
-            password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-            confirmPassword: new FormControl('', Validators.required)
-        }, this.passwordMatchValidator);
+        this.initForm();
     }
 
     isErrors(controlName: string): boolean {
@@ -44,6 +41,15 @@ export class RegisterComponent implements OnInit {
     cancel(): void {
         this.cancelRegister.emit(false);
     }
+
+    private initForm() {
+        this.registerForm = this.fb.group({
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+            confirmPassword: ['', Validators.required]
+        }, {Validators: this.passwordMatchValidator});
+    }
+
     // Check if password and confirmPassword matches
     private passwordMatchValidator(g: FormGroup): { mismatch: boolean } {
         return g.get('password').value === g.get('confirmPassword').value ? null : {'mismatch': true};
