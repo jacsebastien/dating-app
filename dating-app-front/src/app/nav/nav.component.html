@@ -36,7 +36,7 @@
 
             <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
                 <li>
-                    <img src="{{photoUrl}}" alt="">
+                    <img src="{{photoUrl || '../../assets/user.png'}}" alt="">
                 </li>
                 <li class="dropdown" dropdown>
                     <a (click)="false" class="dropdown-toggle" dropdownToggle>
