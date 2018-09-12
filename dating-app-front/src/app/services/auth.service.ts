@@ -58,10 +58,10 @@ export class AuthService {
         localStorage.removeItem(this.localStorageUser);
     }
 
-    register(model: any): any {
+    register(user: User): any {
         const httpOptions = this.getHeaders();
 
-        return this.http.post(this.baseUrl + 'register', model, httpOptions)
+        return this.http.post(this.baseUrl + 'register', user, httpOptions)
         .pipe(
             catchError(this.errorsSrv.handleHttpError)
         );
