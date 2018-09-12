@@ -7,13 +7,17 @@ import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap'
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
+import { MomentModule } from 'ngx-moment';
 
 import { AppRoutingModule } from './app-routing.module';
+
+import { environment } from '../environments/environment';
 
 import { AuthService } from './services/auth.service';
 import { AlertifyService } from './services/alertify.service';
 import { UserService } from './services/user.service';
 import { ErrorsService } from './services/errors.service';
+
 import { AuthGuard } from './guards/auth.guard';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberListResolver } from './resolvers/member-list.resolver';
@@ -27,7 +31,6 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
-import { environment } from '../environments/environment';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
@@ -69,7 +72,8 @@ export function tokenGetter() {
             }
         }),
         NgxGalleryModule,
-        FileUploadModule
+        FileUploadModule,
+        MomentModule
     ],
     providers: [
         AuthService,

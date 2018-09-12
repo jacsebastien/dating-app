@@ -25,11 +25,11 @@
                         </li>
                         <li>
                             <span class="user-label">Last Active: </span>
-                            <span class="data">{{user.lastActive}}</span>
+                            <span class="data">{{user.lastActive | amTimeAgo}}</span>
                         </li>
                         <li>
                             <span class="user-label">Member Since: </span>
-                            <span class="data">{{user.created}}</span>
+                            <span class="data">{{user.created  | date: 'mediumDate'}}</span>
                         </li>
                     </ul>
                 </div>
