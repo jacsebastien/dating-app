@@ -70,7 +70,9 @@ namespace DatingApp.API
             services.AddMvc().AddJsonOptions(opt => {
                 // Ignore self referencing loop in json serialisation to avoid errors for infinity loop
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });            
+            });   
+
+            services.AddScoped<LogUserActivity>();         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
