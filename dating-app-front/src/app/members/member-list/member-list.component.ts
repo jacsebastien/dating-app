@@ -18,7 +18,7 @@ export class MemberListComponent implements OnInit {
         // Use resolver to retrieve user data after route loading
         this.route.data
         .subscribe(data => {
-            this.users = data['users'];
+            this.users = data['users'].result;
         });
     }
 }

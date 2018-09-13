@@ -9,6 +9,9 @@ import 'rxjs/add/observable/of';
 
 @Injectable()
 export class MemberListResolver implements Resolve<User[]> {
+    pageNumber = 1;
+    pageSize = 5;
+
     constructor(
         private userService: UserService,
         private router: Router,
@@ -17,7 +20,7 @@ export class MemberListResolver implements Resolve<User[]> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User[]> {
         // no need to subscribe, route resolver do it automatically
-        return this.userService.getUsers()
+        return this.userService.getUsers(this.pageNumber, this.pageSize)
         .catch(error => {
             this.alertify.error('Problem retrieving data');
             this.router.navigate(['/home']);
