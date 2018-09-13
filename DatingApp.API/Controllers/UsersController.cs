@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +26,15 @@ namespace DatingApp.API.Controllers
 
         // GET: api/users
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _repo.GetUsers();
+            var users = await _repo.GetPagedUsers(userParams);
 
             // Transform data to return thanks to Mapper and configured Dto to avoid sending ALL user data like password etc
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+
+            // add pagination infos in header
+            Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
             return Ok(usersToReturn);
         }
