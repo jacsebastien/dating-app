@@ -3,3 +3,13 @@
     flex-flow: row wrap;
     align-content: flex-end;
 }
+
+.pagination-block {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+
+    pagination {
+        margin: auto;
+    }
+}
