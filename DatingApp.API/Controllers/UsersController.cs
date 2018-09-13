@@ -28,6 +28,17 @@ namespace DatingApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userFromRepo = await _repo.GetUser(currentUserId);
+
+            userParams.UserId = currentUserId;
+
+            if(string.IsNullOrEmpty(userParams.Gender))
+            {
+                // filter to the opposite gender of connected user
+                userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male";
+            }
+
             var users = await _repo.GetPagedUsers(userParams);
 
             // Transform data to return thanks to Mapper and configured Dto to avoid sending ALL user data like password etc
