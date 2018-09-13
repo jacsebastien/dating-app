@@ -5,7 +5,7 @@
 </header>
 
 <div class="container">
-    <div class="row">
+    <div class="row filter-form">
         <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()" novalidate>
             <div class="form-group">
                 <label for="minAge">Age From</label>
@@ -28,19 +28,21 @@
                     </option>
                 </select>
             </div>
+
             <button type="submit" class="btn btn-primary" style="margin-left:10px">Apply Filters</button>
             <button type="button" class="btn btn-info" (click)="resetFilters()" style="margin-left:10px">Reset Filter</button>
+
+            <div>
+                <label style="margin-right: 10px">Order By: </label>
+                <div class="btn-group">
+                    <button type="button" name="orderBy" class="btn btn-primary"
+                        [(ngModel)]="userParams.orderBy" btnRadio="lastActive" (click)="loadUsers()">Last Active</button>
+                    <button type="button" name="orderBy" class="btn btn-primary"
+                        [(ngModel)]="userParams.orderBy" btnRadio="created" (click)="loadUsers()">Newest Members</button>
+                </div>
+            </div>
         </form>
     </div>
-    <br>
-
-    <!-- <div class="pull-right">
-        <label style="margin-right: 10px">Order By: </label>
-        <div class="btn-group">
-            <button type="button" name="orderBy" class="btn btn-primary" btnRadio="lastActive">Last Active</button>
-            <button type="button" name="orderBy" class="btn btn-primary" btnRadio="created">Newest Members</button>
-        </div>
-    </div> -->
 
     <div class="row equal">
         <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
