@@ -1,0 +1,14 @@
+D:\www\training\dating-app\Api\Api\bin\Debug\netcoreapp2.1\Api.deps.json
+D:\www\training\dating-app\Api\Api\bin\Debug\netcoreapp2.1\Api.runtimeconfig.json
+D:\www\training\dating-app\Api\Api\bin\Debug\netcoreapp2.1\Api.runtimeconfig.dev.json
+D:\www\training\dating-app\Api\Api\bin\Debug\netcoreapp2.1\Api.dll
+D:\www\training\dating-app\Api\Api\bin\Debug\netcoreapp2.1\Api.pdb
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.csprojAssemblyReference.cache
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.csproj.CoreCompileInputs.cache
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.RazorAssemblyInfo.cache
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.RazorAssemblyInfo.cs
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.AssemblyInfoInputs.cache
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.AssemblyInfo.cs
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.RazorTargetAssemblyInfo.cache
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.dll
+D:\www\training\dating-app\Api\Api\obj\Debug\netcoreapp2.1\Api.pdb
