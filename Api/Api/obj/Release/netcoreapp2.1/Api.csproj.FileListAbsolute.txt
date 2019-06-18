@@ -9,3 +9,6 @@ D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.RazorAssemblyIn
 D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.AssemblyInfoInputs.cache
 D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.AssemblyInfo.cs
 D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.RazorTargetAssemblyInfo.cache
+D:\www\training\dating-app\Api\Api\bin\Release\netcoreapp2.1\Api.pdb
+D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.dll
+D:\www\training\dating-app\Api\Api\obj\Release\netcoreapp2.1\Api.pdb
